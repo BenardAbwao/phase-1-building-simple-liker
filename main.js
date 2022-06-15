@@ -3,10 +3,45 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+let myWork = document.querySelector('#modal')
+myWork.setAttribute('Class','hidden')
 
+function hideError (){
+  myWork.className = "hidden";
+}
 
+let heart = document.querySelectorAll(' span')
 
+heart.forEach( like =>{
+like.addEventListener('click',()=>{
+  fillHeart(like)
+  mimicServerCall()
+    .then(res => {
+      if(res === "Pretend remote server notified of action!"){
+        fillHeart()
+      }
+    })
+    .catch( error => {
+      if(error === "Random server error. Try again."){
+        myWork.className = "";
+        myWork.innerHTML = error;
+      setTimeout(visibleModal, 3000)
 
+      }
+    })
+  })
+})
+
+function fillHeart (like){
+  if(like.className === 'like-glyph'){
+    like.innerHTML = FULL_HEART
+    like.className = 'like-glyph activated-heart'
+  } 
+  else if (like.className === 'like-glyph activated-heart'){
+    like.innerHTML = EMPTY_HEART
+    like.className = 'like-glyph'
+  }
+}
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
 //------------------------------------------------------------------------------
